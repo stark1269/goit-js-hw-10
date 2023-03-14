@@ -8,14 +8,40 @@ const list = document.querySelector('.country-list');
 const info = document.querySelector('.country-info');
 const DEBOUNCE_DELAY = 300;
 
-function onInputSearch() {
+// function onInputSearch() {
+//   const inputValue = input.value.trim();
+
+//   if (!inputValue) {
+//     clearHtml();
+//     return
+//   }
+//   fetchCountries(inputValue).then(data => {
+//     if (data.length > 10) {
+//       clearHtml();
+//       Notiflix.Notify.info("Too many matches found. Please enter a more specific name.");
+//     } else if (data.length >= 2 && data.length <= 10) {
+//       clearHtml();
+//       createListCount(data);
+//     } else if (data.length === 0) {
+//       clearHtml();
+//       Notiflix.Notify.failure("Oops, there is no country with that name");
+//     } else if (data.length === 1) {
+//       clearHtml();
+//       createInfoCount(data);
+//     };
+//   }).catch(error => console.log(error));
+// };
+
+async function onInputSearch() {
   const inputValue = input.value.trim();
 
   if (!inputValue) {
     clearHtml();
     return
-  }
-  fetchCountries(inputValue).then(data => {
+  };
+
+  try {
+    const data = await fetchCountries(inputValue);
     if (data.length > 10) {
       clearHtml();
       Notiflix.Notify.info("Too many matches found. Please enter a more specific name.");
@@ -29,7 +55,9 @@ function onInputSearch() {
       clearHtml();
       createInfoCount(data);
     };
-  }).catch(error => console.log(error));
+  } catch (error) {
+    console.log(error)
+  };
 };
 
 function createListCount(countries) {
